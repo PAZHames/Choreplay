@@ -1,0 +1,34 @@
+.chore-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Optional: If you want to stack children vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center;
+
+}
+
+.header h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.chore-buttons button {
+    background-color: blue;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
+    transition: background-color 0.3s;
+}
+
+.chore-buttons button.clicked {
+    background-color: red;
+}
+
+.next-page-button {
+    text-align: center;
+    margin-top: 20px;
+}
+
