@@ -22,6 +22,7 @@
 import React from "react";
 import './GamePageRender.css';
 
+
 const GameDisplay = ({ canvasRef }) => {
     
     return (

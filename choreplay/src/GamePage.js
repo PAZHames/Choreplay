@@ -261,9 +261,10 @@ import GameDisplay from "./GamePageRender";
 const GamePage = () => {
     const canvasRef = useRef(null);
     const [gameOver, setGameOver] = useState(false);
-    const [score, setScore] = useState(0);
+    console.log('!')
 
     useEffect(() => {
+        console.log('useEffect running!')
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
 
@@ -296,8 +297,8 @@ const GamePage = () => {
         const shipImg = new Image();
         const spongeImg = new Image();
 
-        shipImg.src = "/public/ship.png";
-        spongeImg.src = "/public/sponge.png";
+        shipImg.src = "ship.png";
+        spongeImg.src = "sponge.png";
 
         shipImg.onload = () => {
             context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
@@ -315,7 +316,7 @@ const GamePage = () => {
                         alive: true,
                         isSpecial: c === 0 && r === 0 // Set the first mud as special
                     };
-                    mud.img.src = "/public/mud.png";
+                    mud.img.src = "mud.png";
                     mud.img.onload = () => {
                         context.drawImage(mud.img, mud.x, mud.y, mud.width, mud.height);
                     };
@@ -378,7 +379,7 @@ const GamePage = () => {
 
             context.fillStyle = "white";
             context.font = "16px courier";
-            context.fillText(score, 5, 20);
+            context.fillText('All done!',5,20);
 
             requestAnimationFrame(update);
         };
@@ -442,7 +443,7 @@ const GamePage = () => {
             document.removeEventListener("keydown", moveShip);
             document.removeEventListener("keyup", shoot);
         };
-    }, [gameOver, score]);
+    }, [gameOver]);
 
     return <GameDisplay canvasRef={canvasRef} />;
 };
