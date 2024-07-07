@@ -53,6 +53,10 @@ export default function HouseChoreList() {
                     </div>
                 ))}
 
+                <div className='image'>
+                    <img src="Group 9.png" width="250px"/>
+                </div>
+
 <div className="button-for-game-page">
     <button onClick={navigateToPeoplePage}>READY</button>
 </div>
