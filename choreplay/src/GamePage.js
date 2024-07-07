@@ -255,54 +255,186 @@
 // // }
 
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import GameDisplay from "./GamePageRender";
 
 const GamePage = () => {
     const canvasRef = useRef(null);
-    const shipImg = useRef(new Image());
-    const spongeImg = useRef(new Image());
-    let tileSize = 32;
-    let rows = 16;
-    let columns = 16;
-    let boardWidth = tileSize * columns;
-    let boardHeight = tileSize * rows;
-    let context;
-    let shipWidth = tileSize;
-    let shipHeight = tileSize;
-    let shipX = tileSize * columns / 2 - tileSize;
-    let shipY = tileSize * rows - tileSize * 2;
-    let ship = { x: shipX, y: shipY, width: shipWidth, height: shipHeight };
-    let shipVelocityX = tileSize;
-    let mudArray = [];
-    let mudWidth = tileSize / 2;
-    let mudHeight = tileSize;
-    let mudX = tileSize;
-    let mudY = tileSize;
-    let mudRows = 2;
-    let mudColumns = 3;
-    let mudCount = 0;
-    let mudVelocityX = 1;
-    let spongeArray = [];
-    let spongeVelocityY = -10;
-    let score = 0;
-    let gameOver = false;
+    const [gameOver, setGameOver] = useState(false);
+    const [score, setScore] = useState(0);
 
     useEffect(() => {
         const canvas = canvasRef.current;
+        const context = canvas.getContext("2d");
+
+        let tileSize = 32;
+        let rows = 16;
+        let columns = 16;
+        let boardWidth = tileSize * columns;
+        let boardHeight = tileSize * rows;
         canvas.width = boardWidth;
         canvas.height = boardHeight;
-        context = canvas.getContext("2d");
 
-        shipImg.current.src = "public/ship.png";
-        shipImg.current.onload = () => {
-            context.drawImage(shipImg.current, ship.x, ship.y, ship.width, ship.height);
+        let shipWidth = tileSize;
+        let shipHeight = tileSize;
+        let shipX = tileSize * columns / 2 - tileSize;
+        let shipY = tileSize * rows - tileSize * 2;
+        let ship = { x: shipX, y: shipY, width: shipWidth, height: shipHeight };
+        let shipVelocityX = tileSize;
+        let mudArray = [];
+        let mudWidth = tileSize / 2;
+        let mudHeight = tileSize;
+        let mudX = tileSize;
+        let mudY = tileSize;
+        let mudRows = 2;
+        let mudColumns = 3;
+        let mudCount = 0;
+        let mudVelocityX = 1;
+        let spongeArray = [];
+        let spongeVelocityY = -10;
+
+        const shipImg = new Image();
+        const spongeImg = new Image();
+
+        shipImg.src = "/public/ship.png";
+        spongeImg.src = "/public/sponge.png";
+
+        shipImg.onload = () => {
+            context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
         };
 
-        spongeImg.current.src = "public/sponge.png";
+        const createMuds = () => {
+            for (let c = 0; c < mudColumns; c++) {
+                for (let r = 0; r < mudRows; r++) {
+                    let mud = {
+                        img: new Image(),
+                        x: mudX + c * mudWidth,
+                        y: mudY + r * mudHeight,
+                        width: mudWidth,
+                        height: mudHeight,
+                        alive: true,
+                        isSpecial: c === 0 && r === 0 // Set the first mud as special
+                    };
+                    mud.img.src = "/public/mud.png";
+                    mud.img.onload = () => {
+                        context.drawImage(mud.img, mud.x, mud.y, mud.width, mud.height);
+                    };
+                    mudArray.push(mud);
+                }
+            }
+            mudCount = mudArray.length;
+        };
+
+        const update = () => {
+            if (gameOver) {
+                return gameOverScreen();
+            }
+
+            context.clearRect(0, 0, boardWidth, boardHeight);
+            context.drawImage(shipImg, ship.x, ship.y, ship.width, ship.height);
+
+            for (let mud of mudArray) {
+                if (mud.alive) {
+                    mud.x += mudVelocityX;
+                    if (mud.x + mud.width > boardWidth || mud.x <= 0) {
+                        mudVelocityX *= -1;
+                        mud.x += mudVelocityX * 2;
+                        for (let m of mudArray) {
+                            m.y += mudHeight;
+                        }
+                    }
+                    context.drawImage(mud.img, mud.x, mud.y, mud.width, mud.height);
+                    if (mud.y >= ship.y) {
+                        setGameOver(true);
+                    }
+                }
+            }
+
+            for (let sponge of spongeArray) {
+                sponge.y += spongeVelocityY;
+                context.drawImage(spongeImg, sponge.x, sponge.y, sponge.width, sponge.height);
+                for (let mud of mudArray) {
+                    if (!sponge.used && mud.alive && detectCollision(sponge, mud)) {
+                        sponge.used = true;
+                        mud.alive = false;
+                        mudCount--;
+                        if (mud.isSpecial) {
+                            openPopup(); // Trigger popup if the mud is special
+                        }
+                    }
+                }
+            }
+
+            spongeArray = spongeArray.filter(s => !s.used && s.y >= 0);
+
+            if (mudCount === 0) {
+                mudColumns = Math.min(mudColumns + 1, columns - 2);
+                mudRows = Math.min(mudRows + 1, rows - 4);
+                mudVelocityX += 0.2;
+                mudArray = [];
+                spongeArray = [];
+                createMuds();
+            }
+
+            context.fillStyle = "white";
+            context.font = "16px courier";
+            context.fillText(score, 5, 20);
+
+            requestAnimationFrame(update);
+        };
+
+        const moveShip = (e) => {
+            if (gameOver) {
+                return gameOverScreen();
+            }
+            if (e.code === "ArrowLeft" && ship.x - shipVelocityX >= 0) {
+                ship.x -= shipVelocityX;
+            } else if (e.code === "ArrowRight" && ship.x + shipVelocityX + shipWidth <= boardWidth) {
+                ship.x += shipVelocityX;
+            }
+        };
+
+        const shoot = (e) => {
+            if (gameOver) {
+                return gameOverScreen();
+            }
+            if (e.code === "Space") {
+                let sponge = {
+                    x: ship.x + shipWidth * 15 / 32,
+                    y: ship.y,
+                    width: tileSize / 8,
+                    height: tileSize / 8,
+                    used: false
+                };
+                spongeArray.push(sponge);
+            }
+        };
+
+        const detectCollision = (a, b) => {
+            return a.x < b.x + b.width &&
+                a.x + a.width > b.x &&
+                a.y < b.y + b.height &&
+                a.y + a.height > b.y;
+        };
+
+        const gameOverScreen = () => {
+            context.fillStyle = "white";
+            context.font = "72px courier";
+            let text = "CHORE HIT";
+            let textWidth = context.measureText(text).width;
+            let textX = (boardWidth - textWidth) / 2;
+            let textY = boardHeight / 2;
+            context.fillText(text, textX, textY);
+            openPopup();
+        };
+
+        const openPopup = () => {
+            document.getElementById('chorePopup').style.display = 'block';
+        };
 
         createMuds();
         requestAnimationFrame(update);
+
         document.addEventListener("keydown", moveShip);
         document.addEventListener("keyup", shoot);
 
@@ -310,133 +442,7 @@ const GamePage = () => {
             document.removeEventListener("keydown", moveShip);
             document.removeEventListener("keyup", shoot);
         };
-    }, []);
-
-    const createMuds = () => {
-        for (let c = 0; c < mudColumns; c++) {
-            for (let r = 0; r < mudRows; r++) {
-                let mud = {
-                    img: new Image(),
-                    x: mudX + c * mudWidth,
-                    y: mudY + r * mudHeight,
-                    width: mudWidth,
-                    height: mudHeight,
-                    alive: true
-                };
-                mud.img.onload = () => {
-                    context.drawImage(mud.img, mud.x, mud.y, mud.width, mud.height);
-                };
-                mud.img.src = "public/mud.png";
-                mudArray.push(mud);
-            }
-        }
-        mudCount = mudArray.length;
-    };
-
-    const update = () => {
-        requestAnimationFrame(update);
-
-        if (gameOver) {
-            return gameOverScreen();
-        }
-
-        context.clearRect(0, 0, boardWidth, boardHeight);
-        context.drawImage(shipImg.current, ship.x, ship.y, ship.width, ship.height);
-
-        for (let mud of mudArray) {
-            if (mud.alive) {
-                mud.x += mudVelocityX;
-                if (mud.x + mud.width > boardWidth || mud.x <= 0) {
-                    mudVelocityX *= -1;
-                    mud.x += mudVelocityX * 2;
-                    for (let m of mudArray) {
-                        m.y += mudHeight;
-                    }
-                }
-                context.drawImage(mud.img, mud.x, mud.y, mud.width, mud.height);
-                if (mud.y >= ship.y) {
-                    gameOver = true;
-                }
-            }
-        }
-
-        for (let sponge of spongeArray) {
-            sponge.y += spongeVelocityY;
-            context.drawImage(spongeImg.current, sponge.x, sponge.y, sponge.width, sponge.height);
-            for (let mud of mudArray) {
-                if (!sponge.used && mud.alive && detectCollision(sponge, mud)) {
-                    sponge.used = true;
-                    mud.alive = false;
-                    mudCount--;
-                    score += 100;
-                }
-            }
-        }
-
-        spongeArray = spongeArray.filter(s => !s.used && s.y >= 0);
-
-        if (mudCount === 0) {
-            mudColumns = Math.min(mudColumns + 1, columns - 2);
-            mudRows = Math.min(mudRows + 1, rows - 4);
-            mudVelocityX += 0.2;
-            mudArray = [];
-            spongeArray = [];
-            createMuds();
-        }
-
-        context.fillStyle = "white";
-        context.font = "16px courier";
-        context.fillText(score, 5, 20);
-    };
-
-    const moveShip = (e) => {
-        if (gameOver) {
-            return gameOverScreen();
-        }
-        if (e.code === "ArrowLeft" && ship.x - shipVelocityX >= 0) {
-            ship.x -= shipVelocityX;
-        } else if (e.code === "ArrowRight" && ship.x + shipVelocityX + shipWidth <= boardWidth) {
-            ship.x += shipVelocityX;
-        }
-    };
-
-    const shoot = (e) => {
-        if (gameOver) {
-            return gameOverScreen();
-        }
-        if (e.code === "Space") {
-            let sponge = {
-                x: ship.x + shipWidth * 15 / 32,
-                y: ship.y,
-                width: tileSize / 8,
-                height: tileSize / 8,
-                used: false
-            };
-            spongeArray.push(sponge);
-        }
-    };
-
-    const detectCollision = (a, b) => {
-        return a.x < b.x + b.width &&
-            a.x + a.width > b.x &&
-            a.y < b.y + b.height &&
-            a.y + a.height > b.y;
-    };
-
-    const gameOverScreen = () => {
-        context.fillStyle = "white";
-        context.font = "72px courier";
-        let text = "CHORE HIT";
-        let textWidth = context.measureText(text).width;
-        let textX = (boardWidth - textWidth) / 2;
-        let textY = boardHeight / 2;
-        context.fillText(text, textX, textY);
-        openPopup();
-    };
-
-    const openPopup = () => {
-        document.getElementById('chorePopup').style.display = 'block';
-    };
+    }, [gameOver, score]);
 
     return <GameDisplay canvasRef={canvasRef} />;
 };

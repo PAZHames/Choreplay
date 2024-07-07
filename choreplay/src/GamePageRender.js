@@ -27,9 +27,9 @@ const GameDisplay = ({ canvasRef }) => {
     return (
         <>
             <h1>Choreplay</h1>
-            <div id="chorePopup" className="popup">
-                <div className="popup-content">
-                    <h2>You bagged a chore!</h2>
+            <div id="chorePopup">
+                <div id="popup-content">
+                    <h2>It's floor mopping for you! Grab that mop, king!</h2>
                 </div>
             </div>
             <div className="flex-row">

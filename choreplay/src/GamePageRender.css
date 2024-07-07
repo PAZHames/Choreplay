@@ -12,7 +12,7 @@ h1 {
     margin-bottom: 20px;
 }
 
-.popup {
+#chorePopup {
     display: none;
     position: fixed;
     top: 0;
@@ -22,7 +22,7 @@ h1 {
     background-color: rgba(0, 0, 0, 0.5);
   }
   
-  .popup-content {
+  #popup-content {
     background-color: #fff;
     max-width: 400px;
     margin: 20px auto;
@@ -34,12 +34,12 @@ h1 {
   #board {
     width: 540px;
     height: 540px;
-    background-color: white;
+    background-color: lightgray;
     background-size: cover;
     display: flex;
     flex-wrap: wrap;
     margin: 0 auto;
-    border: 3px solid white;
+    border: 3px solid black;
     border-radius: 20px;
 
 }
