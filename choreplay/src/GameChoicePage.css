@@ -1,0 +1,37 @@
+.game-choice-content {
+    text-align: center;
+}
+
+.games {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Space between items */
+}
+
+.game {
+    flex: 1 1 45%; /* Two columns, each taking up about 45% of the width */
+    box-sizing: border-box;
+    text-align: center; /* Center the text and image within each game div */
+    padding: 10px; /* Optional: Add some padding */
+}
+
+.game img {
+    width: 100px; /* Adjust the width as needed */
+    height: auto; /* Maintain aspect ratio */
+    display: block;
+    margin: 0 auto; /* Center the image horizontally */
+}
+
+.game-choice-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Optional: If you want to stack children vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center;
+    font-family: 'Karla', sans-serif;
+
+}
+
+
+
