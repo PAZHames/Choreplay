@@ -26,7 +26,6 @@ const GameDisplay = ({ canvasRef }) => {
     
     return (
         <>
-        
             <h1>Choreplay</h1>
             <div id="chorePopup" className="popup">
                 <div className="popup-content">

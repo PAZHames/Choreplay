@@ -34,7 +34,7 @@ h1 {
   #board {
     width: 540px;
     height: 540px;
-    background: url(./images/game-board-background.jpg);
+    background-color: white;
     background-size: cover;
     display: flex;
     flex-wrap: wrap;
