@@ -1,0 +1,61 @@
+.people-page-content {
+    padding: 20px;
+    display: flex;
+    flex-direction: column; /* Optional: If you want to stack children vertically */
+    justify-content: center; /* Center vertically */
+    align-items: center;
+    font-family: 'Karla', sans-serif;
+
+}
+
+.phoebe {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Align items vertically in the center */
+    gap: 20px; /* Gap between the image and text */
+}
+
+.phoebe-image {
+    flex: 0 0 auto; /* Let this div grow and shrink as needed */
+}
+
+.phoebe-name {
+    flex: 1; /* Take up remaining space */
+}
+
+.image-size {
+    max-width: 100%; /* Ensure image doesn't exceed its container */
+    height: auto; /* Maintain aspect ratio */
+}
+
+.grace {
+    display: flex; /* Use flexbox */
+    align-items: center; /* Align items vertically in the center */
+    gap: 20px; /* Gap between the image and text */
+}
+
+.grace-image {
+    flex: 0 0 auto; /* Let this div grow and shrink as needed */
+}
+
+.grace-name {
+    flex: 1; /* Take up remaining space */
+}
+
+.button-for-game-page button {
+    background-color: #E3C421; /* Nicer light green color */
+    border: none; /* Remove default border */
+    color: black; /* Text color */
+    padding: 15px 70px; /* Bigger size */
+    font-size: 16px; /* Increase font size */
+    border-radius: 10px; /* Rounded edges */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+    padding-left: 80px;
+    font-weight: bold;
+
+}
+
+/* Add hover effect */
+.button-for-game-page button:hover {
+    background-color: lightyellow; /* Slightly darker green for hover */
+}
