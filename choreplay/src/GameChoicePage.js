@@ -1,7 +1,13 @@
 import './GameChoicePage.css';
+import { useNavigate } from 'react-router-dom';
 
 
 export default function GameChoicePage () {
+    const navigate = useNavigate(); 
+    
+    const navigateToGamePage = () => {
+        navigate('/gamepage');
+    };
     return (
         <div>
             <div className="game-choice-content">
@@ -12,7 +18,7 @@ export default function GameChoicePage () {
 
                 <div className="games">
                     <div className="game">
-                        <img src="/spaceinvaders.png" />
+                        <img src="/spaceinvaders.png" onClick={navigateToGamePage}/>
                         <p>Space Invaders</p>
                     </div>
                     <div className="game">

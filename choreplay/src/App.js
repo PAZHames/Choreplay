@@ -5,6 +5,7 @@ import PeoplePage from './PeoplePage';
 import GameChoicePage from './GameChoicePage';
 import HouseChoreList from './HouseChoreList';
 import Header from './Header';
+import GameDisplay from './GamePageRender';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/people" element={<PeoplePage />} />
         <Route path="/gamechoice" element={<GameChoicePage />} />
         <Route path="/chorelist" element={<HouseChoreList /> } />
+        <Route path="/gamepage" element={<GameDisplay/>} />
       </Routes>
     </Router>
   );

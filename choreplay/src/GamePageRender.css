@@ -1,0 +1,46 @@
+body {
+    
+    text-align: center;
+    font-family: var(--primary-font);
+    font-family: 'Karla', sans-serif;
+
+    
+}
+
+h1 {
+    font-size: 72px;
+    margin-bottom: 20px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .popup-content {
+    background-color: #fff;
+    max-width: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+  }
+
+  #board {
+    width: 540px;
+    height: 540px;
+    background: url(./images/game-board-background.jpg);
+    background-size: cover;
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    border: 3px solid white;
+    border-radius: 20px;
+
+}
+
