@@ -21,7 +21,7 @@ export default function ChorePage() {
     return (
         <div className="chore-content">
             <div className="header">
-                <h1>What don't you want to do?</h1>
+                <h3>What don't you want to do?</h3>
             </div>
 
             <div className="image-container">
