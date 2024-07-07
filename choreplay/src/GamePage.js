@@ -283,7 +283,7 @@ const GamePage = () => {
         let ship = { x: shipX, y: shipY, width: shipWidth, height: shipHeight };
         let shipVelocityX = tileSize;
         let mudArray = [];
-        let mudWidth = tileSize / 2;
+        let mudWidth = tileSize;
         let mudHeight = tileSize;
         let mudX = tileSize;
         let mudY = tileSize;
@@ -403,8 +403,8 @@ const GamePage = () => {
                 let sponge = {
                     x: ship.x + shipWidth * 15 / 32,
                     y: ship.y,
-                    width: tileSize / 8,
-                    height: tileSize / 8,
+                    width: tileSize / 2,
+                    height: tileSize / 2,
                     used: false
                 };
                 spongeArray.push(sponge);
