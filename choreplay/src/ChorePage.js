@@ -28,12 +28,14 @@ export default function ChorePage() {
     <img onClick={navigateToPeoplePage} src="/Group 4.png" alt="it's me" className="image-size" />
     <img onClick={togglePopup} src="/icon.png" width="50" height="auto" alt="Exit button" className="exit-button" />
 </div>
+<div className="vertical-space"></div>
+ 
 
 
 
-            <img onClick={navigateToPeoplePage} src="/Group 1.png" alt="it's me" className="image-size" />
-            <img onClick={navigateToPeoplePage} src="/Group 3.png" alt="it's me" className="image-size" />
+            <img onClick={navigateToPeoplePage} src="/Group 1.png" alt="it's me" className="image-size" width="100px" />
             <img onClick={navigateToPeoplePage} src="/Group 2.png" alt="it's me" className="image-size" />
+            <img onClick={navigateToPeoplePage} src="/Group 3.png" alt="it's me" className="image-size" />
 
             {popupOpen && (
                 <div className="popup">
